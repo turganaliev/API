@@ -2,19 +2,14 @@ import requests
 import pygal
 from pygal.style import LightColorizedStyle as LCS, LightenStyle as LS
 
-# Создание вызова API и сохранение ответа
-url = 'https://api.github.com/search/repositories?q=language:python&sort=stars'
-r = requests.get(url)
+headers = {"Accept": "application/vnd.github.v3+json"}
+url = "https://api.github.com/search/repositories?q=language:python&sort=stars"
+r = requests.get(url, headers=headers)
 print('Status code: ', r.status_code)
 
-# Сохранение ответа API в переменной
 response_dict = r.json()
 print('Total repositories:', response_dict['total_count'])
 
-# Обработка результатов
-#print(response_dict.keys())
-
-# Анализ информации о репозиториях
 repo_dicts = response_dict['items']
 
 #names, stars = [], []
@@ -29,7 +24,7 @@ for repo_dict in repo_dicts:
     }
     plot_dicts.append(plot_dict)
 
-# Построение визуализации
+
 my_style = LS('#333366', base_style=LCS)
 my_config = pygal.Config()
 my_config.x_label_rotation = 45
@@ -51,7 +46,6 @@ chart.render_to_file('python_repos.svg')
 
 #print('Repositories returned:', len(repo_dicts))
 
-# Анализ первого репозитория
 #repo_dict = repo_dicts[0]
 #print('\nKeys:', len(repo_dict))
 #for key in sorted(repo_dict.keys()):
